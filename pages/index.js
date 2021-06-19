@@ -1,10 +1,12 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import styles from '../styles/Home.module.css';
+import firebase from 'firebase/app';
 import React from 'react';
 import { useCollection } from 'react-firebase-hooks/firestore';
 import {Bar} from 'react-chartjs-2';
 import { firebaseConfig } from '../public/firebaseConfig.js';
+import 'firebase/firestore';
 
 const data = {
   labels: ['Infant', 'Child', 'Adult'],
@@ -30,8 +32,12 @@ if (!firebase.apps.length) {
 }
 
 export default function Home() {
-  const ref = firestore.collection('cpr')
-  const [data] = useCollection(ref)
+  const [value, loading, error] = useCollection(
+    firebase.firestore().collection('cpr'),
+    {
+      snapshotListenOptions: { includeMetadataChanges: true },
+    }
+  );
   return (
     <div>
       <Head>
@@ -61,11 +67,25 @@ export default function Home() {
             <button>Download CSV</button>
         </div>
         
-        <Bar
+        <p>
+        {error && <strong>Error: {JSON.stringify(error)}</strong>}
+        {loading && <span>Collection: Loading...</span>}
+        {value && (
+          <span>
+            Collection:{' '}
+            {value.docs.map((doc) => (
+              <React.Fragment key={doc.id}>
+                {JSON.stringify(doc.data())},{' '}
+              </React.Fragment>
+            ))}
+          </span>
+        )}
+      </p>
+        {/* <Bar
           width={100}
           height={60}
           data={data}
-        />
+        /> */}
       </div>
     </div>
   )
