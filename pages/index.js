@@ -38,15 +38,15 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div>
-        <h2>Bar Example (custom size)</h2>
+    <div>
+      <img src="/image.png" className={styles.image}/>
+    </div>
+      <div className={styles.main}>
+        <h2>Recommended Compressions by Age Group</h2>
         <Bar
+          width={100}
+          height={100}
           data={data}
-          width={400}
-          height={200}
-          options={{
-            maintainAspectRatio: false
-          }}
         />
       </div>
     </div>
