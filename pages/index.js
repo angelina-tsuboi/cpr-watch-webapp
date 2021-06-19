@@ -2,7 +2,9 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import React from 'react';
+import { useCollection } from 'react-firebase-hooks/firestore';
 import {Bar} from 'react-chartjs-2';
+import { firebaseConfig } from '../public/firebaseConfig.js';
 
 const data = {
   labels: ['Infant', 'Child', 'Adult'],
@@ -23,7 +25,13 @@ const data = {
   }]
 }
 
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 export default function Home() {
+  const ref = firestore.collection('cpr')
+  const [data] = useCollection(ref)
   return (
     <div>
       <Head>
@@ -38,6 +46,18 @@ export default function Home() {
       <div className={styles.main}>
         <div className={styles.infoHeader}>
             <h2>Recommended Compressions by Age Group</h2>
+            <button>Download CSV</button>
+        </div>
+        
+        <Bar
+          width={100}
+          height={60}
+          data={data}
+        />
+
+
+      <div className={styles.infoHeader}>
+            <h2>Survival Rate by Age Group</h2>
             <button>Download CSV</button>
         </div>
         
