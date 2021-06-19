@@ -1,9 +1,21 @@
 .main{
-  width: 50%;
+  width: 60%;
   height: 50%;
   margin: auto;
 }
 
 .image{
   margin: auto;
+  text-align: center;
+  width: 39%;
+}
+
+.header{
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.infoHeader{
+  display: flex;
+  justify-content: space-between;
 }
